@@ -5,10 +5,13 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.OnConflictStrategy
 
 @Dao
 interface RunDAO {
-    @Insert
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRun(run: Run)
 
     @Delete
@@ -32,11 +35,11 @@ interface RunDAO {
 
 
     @Query("SELECT SUM(timeInMillis) FROM running_table")
-    fun getTotalTimeInMillis() : LiveData<List<Run>>
+    fun getTotalTimeInMillis() : LiveData<Long>
 
     @Query("SELECT SUM(calorieBurned) FROM running_table")
-    fun getTotalCalorieBurned() : LiveData<List<Run>>
+    fun getTotalCalorieBurned() : LiveData<Int>
 
     @Query("SELECT SUM(distanceInMeter) FROM running_table")
-    fun getTotalDistance() : LiveData<List<Run>>
+    fun getTotalDistance() : LiveData<Int>
 }
